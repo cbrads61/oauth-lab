@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "NO CONNECTION", Toast.LENGTH_SHORT).show();
         }
 
+
         mTweetList = new ArrayList<>();
         mTweetList.add(new Tweet("placeholder tweet", "time/date"));
         mRecyclerView = (RecyclerView)findViewById(R.id.recyclerview);
@@ -142,13 +143,12 @@ public class MainActivity extends AppCompatActivity {
                     JSONArray baseData = new JSONArray(response.body().string());
                     for (int i = 0; i < baseData.length(); i++){
                         JSONObject object = baseData.getJSONObject(i);
-                        String tweet = object.toString();
 
-                        Tweet tweetObject = new Gson().fromJson(tweet,Tweet.class);
-                        String t = tweetObject.getTweet();
-                        String d = tweetObject.getTimeOf();
+                        String tweetStr = object.getString("text");
+                        String timeStr = object.getString("created_at");
 
-                        mTweetList.add(new Tweet(t,d));
+
+                        mTweetList.add(new Tweet(tweetStr,timeStr));
                         MainActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
